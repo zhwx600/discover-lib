@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              tools:background="#aaa"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="300dp" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:gravity="center_horizontal"
+                  android:paddingTop="20dp"
+                  android:background="@drawable/shape_dialog_progress">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textColor="#68686E"
+                  android:textSize="16sp"
+                  android:text="下载进度"/>
+        <ProgressBar android:layout_width="match_parent" android:layout_height="14dp"
+                     style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                     android:progressDrawable="@drawable/color_progress"
+                     android:layout_marginTop="30dp"
+                     android:id="@+id/pb"
+                     android:layout_marginLeft="20dp"
+                     android:layout_marginRight="20dp"
+                     android:progress="0"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_marginLeft="20dp"
+                      android:layout_marginRight="20dp"
+                      android:layout_marginTop="6dp" android:layout_height="wrap_content">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                      android:text="0%"
+                      android:textSize="12sp"
+                      android:textColor="#EA5052"
+                      android:id="@+id/tvProgress"
+                      android:layout_weight="1"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/tvSpeed"
+                      android:textColor="#666666"
+                      android:textSize="12sp"
+                      android:text="0 byte/s"/>
+        </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+              android:background="#E8E8F5"
+              android:layout_marginTop="24dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:id="@+id/btnCancel"
+                  android:text="取消下载"
+                  android:paddingTop="16dp"
+                  android:paddingBottom="16dp"
+                  android:textSize="14sp"
+                  android:textColor="#272733"
+                  android:gravity="center"/>
+    </LinearLayout>
+</LinearLayout>
