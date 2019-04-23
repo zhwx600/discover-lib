@@ -41,7 +41,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
 
     private View mRootView;
     private RecyclerView rv;
-    protected View adContainer;
+    protected ViewGroup adContainer;
     private DiscoverAdapter mAdapter;
     private WebView web;
     private ProgressDialog pd;
