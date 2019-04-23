@@ -1,5 +1,7 @@
 package com.aso114.discover.view;
 
+import android.widget.ImageView;
+
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -14,5 +16,6 @@ public class DiscoverAdapter extends BaseQuickAdapter<DiscoverAppModel, BaseView
     @Override
     protected void convert(BaseViewHolder helper, DiscoverAppModel item) {
         helper.setText(R.id.tvName, item.getAppName());
+        helper.<ImageView>getView(R.id.img).setImageResource(item.getImgRes());
     }
 }
