@@ -43,17 +43,20 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
 
     private View mRootView;
     private RecyclerView rv;
-    protected ViewGroup adContainer;
     private DiscoverAdapter mAdapter;
     private WebView web;
     private ProgressDialog pd;
     //下载链接
     private String linkUrl;
     private int position;
+    private View defaultTitleView;
+    private ViewGroup parentView;
 
     public abstract List<DiscoverAppModel> getAppModels();
 
-    public abstract void setAd(ViewGroup adContainer);
+    public abstract void setAd(ViewGroup container);
+
+    public abstract View getCustomTitleView(ViewGroup parentView);
 
     @Nullable
     @Override
@@ -70,7 +73,10 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
 
     private void initView() {
         rv = mRootView.findViewById(R.id.rv);
-        adContainer = mRootView.findViewById(R.id.adContainer);
+        ViewGroup adContainer = mRootView.findViewById(R.id.adContainer);
+        defaultTitleView = mRootView.findViewById(R.id.defaultTitleView);
+        parentView = mRootView.findViewById(R.id.parentView);
+        setCustomTitleView(getCustomTitleView(parentView));
         setAd(adContainer);
         pd = new ProgressDialog(adContainer, this);
         setupRv();
@@ -108,6 +114,16 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
             }
         });
         web.setWebChromeClient(new WebChromeClient());
+    }
+
+    /**
+     * 自定义标题栏
+     */
+    private void setCustomTitleView(View customTitleView) {
+        if (customTitleView == null)
+            return;
+        defaultTitleView.setVisibility(View.GONE);
+        parentView.addView(customTitleView, 0);
     }
 
     /**
