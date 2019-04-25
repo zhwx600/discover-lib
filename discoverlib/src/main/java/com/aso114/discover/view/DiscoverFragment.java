@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.*;
 import android.widget.PopupWindow;
+
 import com.aso114.discover.DiscoverLib;
 import com.aso114.discover.model.EMarket;
 import com.aso114.discover.utils.*;
@@ -29,6 +30,7 @@ import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import io.reactivex.functions.Consumer;
 
 import java.io.File;
@@ -51,6 +53,8 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
 
     public abstract List<DiscoverAppModel> getAppModels();
 
+    public abstract void setAd();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     private void initView() {
         rv = mRootView.findViewById(R.id.rv);
         adContainer = mRootView.findViewById(R.id.adContainer);
+        setAd();
         pd = new ProgressDialog(adContainer, this);
         setupRv();
         initWebView();
