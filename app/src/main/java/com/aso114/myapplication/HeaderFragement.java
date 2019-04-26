@@ -1,20 +1,17 @@
 package com.aso114.myapplication;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.ColorRes;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.model.EMarket;
-import com.aso114.discover.view.DiscoverFragment;
+import com.aso114.discover.view.DiscoverHeaderFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyFragment extends DiscoverFragment {
+public class HeaderFragement extends DiscoverHeaderFragment {
     @Override
     public List<DiscoverAppModel> getAppModels() {
         List<DiscoverAppModel> apps = new ArrayList<>();
@@ -28,20 +25,12 @@ public class MyFragment extends DiscoverFragment {
     }
 
     @Override
-    public void setAd(ViewGroup adContainer) {
-        adContainer.setBackgroundColor(Color.RED);
+    public View getCustomTitleView(ViewGroup parentView) {
+        return null;
     }
 
     @Override
-    public View getCustomTitleView(ViewGroup parentView) {
-        View view = getLayoutInflater().inflate(R.layout.custom_view, parentView, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),HeaderActivity.class));
-            }
-        });
-        return view;
+    public View getHeaderView(RecyclerView rv) {
+        return getLayoutInflater().inflate(R.layout.custom_view, rv, false);
     }
-
 }
