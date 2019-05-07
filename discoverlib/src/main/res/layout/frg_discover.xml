@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parentView"
     android:orientation="vertical">
 
     <TextView
@@ -19,8 +19,15 @@
     <FrameLayout
         android:id="@+id/adContainer"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        tools:background="#aca" />
+        android:layout_height="wrap_content"
+        tools:background="#aca">
+
+        <ImageView
+            android:id="@+id/imgDefault"
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_height="160dp" />
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"

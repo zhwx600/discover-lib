@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.*;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.aso114.discover.DiscoverLib;
@@ -51,10 +52,11 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     private int position;
     private View defaultTitleView;
     private ViewGroup parentView;
+    private ImageView imgDefault;
 
     public abstract List<DiscoverAppModel> getAppModels();
 
-    public abstract void setAd(ViewGroup container);
+    public abstract void setAd(ViewGroup container,ImageView imgDefault);
 
     public abstract View getCustomTitleView(ViewGroup parentView);
 
@@ -76,8 +78,9 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         ViewGroup adContainer = mRootView.findViewById(R.id.adContainer);
         defaultTitleView = mRootView.findViewById(R.id.defaultTitleView);
         parentView = mRootView.findViewById(R.id.parentView);
+        imgDefault = mRootView.findViewById(R.id.imgDefault);
         setCustomTitleView(getCustomTitleView(parentView));
-        setAd(adContainer);
+        setAd(adContainer,imgDefault);
         pd = new ProgressDialog(adContainer, this);
         setupRv();
         initWebView();
@@ -146,8 +149,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         checkPermission();
     }
 
-    private void loadUrl() {
-        DiscoverAppModel discoverAppModel = mAdapter.getData().get(position);
+    public void loadUrl(DiscoverAppModel discoverAppModel) {
         String packageName = discoverAppModel.getPackageName();
         String url;
         if (discoverAppModel.getMarket() == EMarket.YINGYONGBAO)
@@ -168,7 +170,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
             @Override
             public void accept(Permission permission) throws Exception {
                 if (permission.granted) {
-                    loadUrl();
+                    loadUrl(mAdapter.getData().get(position));
                 } else if (permission.shouldShowRequestPermissionRationale) {
                 } else {//不要询问
                     DiscoverLib.showToast("请打开存储权限");
@@ -184,11 +186,6 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     private void download(String url) {
         String fName = getDownloadFileName(url);
         System.out.println("**********" + fName);
-//        File file = FileUtils.isFileExist(fName);
-//        if (file != null) {//文件下载过了，直接跳安装界面
-//            AppUtils.installApp(file);
-//            return;
-//        }
         OkGo.<File>get(url).tag(linkUrl).execute(new FileCallback(FileUtils.getAdDownloadFile().getPath(), fName) {
             @Override
             public void onSuccess(Response<File> response) {

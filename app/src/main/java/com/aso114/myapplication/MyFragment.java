@@ -1,11 +1,8 @@
 package com.aso114.myapplication;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.ColorRes;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.model.EMarket;
@@ -28,20 +25,22 @@ public class MyFragment extends DiscoverFragment {
     }
 
     @Override
-    public void setAd(ViewGroup adContainer) {
-        adContainer.setBackgroundColor(Color.RED);
+    public void setAd(ViewGroup container, ImageView imgDefault) {
+
     }
+
 
     @Override
     public View getCustomTitleView(ViewGroup parentView) {
-        View view = getLayoutInflater().inflate(R.layout.custom_view, parentView, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),HeaderActivity.class));
-            }
-        });
-        return view;
+//        View view = getLayoutInflater().inflate(R.layout.custom_view, parentView, false);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), HeaderActivity.class));
+//            }
+//        });
+//        return view;
+        return null;
     }
 
 }
