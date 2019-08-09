@@ -1,5 +1,7 @@
 package com.aso114.myapplication;
 
+import android.content.Intent;
+import android.util.EventLog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -7,6 +9,8 @@ import android.widget.ImageView;
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.model.EMarket;
 import com.aso114.discover.view.DiscoverFragment;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,11 @@ public class MyFragment extends DiscoverFragment {
 
     @Override
     public void setAd(ViewGroup container, ImageView imgDefault) {
-
+        container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
 

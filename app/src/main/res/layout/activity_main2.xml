@@ -3,20 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/container"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context="com.aso114.myapplication.Main2Activity">
 
     <Button
-        android:id="@+id/button"
-        android:onClick="click1"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="243dp"
-        android:layout_marginLeft="243dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginLeft="129dp"
+        android:layout_marginTop="121dp"
         android:text="Button"
+        android:onClick="click1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'//this
-group='com.github.chimpan'//this
 android {
     compileSdkVersion 28
 
