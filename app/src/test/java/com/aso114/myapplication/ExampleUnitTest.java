@@ -14,4 +14,14 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void testLoop() {
+        int i = 0;
+        while (i < 10) {
+            i++;
+            System.out.println("循环内");
+        }
+        System.out.println("循环结束");
+    }
 }

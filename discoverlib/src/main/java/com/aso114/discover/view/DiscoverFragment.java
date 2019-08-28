@@ -2,11 +2,11 @@ package com.aso114.discover.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.aso114.discover.DiscoverLib;
-import com.aso114.discover.model.EMarket;
 import com.aso114.discover.utils.*;
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.R;
@@ -54,11 +53,12 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     private ViewGroup parentView;
     private ImageView imgDefault;
 
-    public abstract List<DiscoverAppModel> getAppModels();
-
-    public abstract void setAd(ViewGroup container,ImageView imgDefault);
+    public abstract void setAd(ViewGroup container, ImageView imgDefault);
 
     public abstract View getCustomTitleView(ViewGroup parentView);
+
+    public abstract void initData();
+
 
     @Nullable
     @Override
@@ -71,6 +71,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
+        initData();
     }
 
     private void initView() {
@@ -80,10 +81,14 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         parentView = mRootView.findViewById(R.id.parentView);
         imgDefault = mRootView.findViewById(R.id.imgDefault);
         setCustomTitleView(getCustomTitleView(parentView));
-        setAd(adContainer,imgDefault);
+        setAd(adContainer, imgDefault);
         pd = new ProgressDialog(adContainer, this);
         setupRv();
         initWebView();
+    }
+
+    protected void setAppList(List<DiscoverAppModel> list) {
+        mAdapter.setNewData(list);
     }
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
@@ -106,17 +111,32 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                String js;
-                if (mAdapter.getData().get(position).getMarket() == EMarket.QH360)
-                    js = "javascript:var a=document.getElementsByClassName('js-downLog')[0];" +
-                            "window.myJs.showSource(a.href)";
-                else
-                    js = "javascript:var data= document.getElementsByClassName('det-down-btn')[0];\n" +
-                            "window.myJs.showSource(data.getAttribute('data-apkurl'))";
-                web.loadUrl(js);
+                web.loadUrl(loadParseJs(mAdapter.getData().get(position).getMarketType()));
             }
+
         });
         web.setWebChromeClient(new WebChromeClient());
+    }
+
+    private String loadParseJs(int market) {
+        switch (market) {
+            case 1://360
+                return "javascript:var a=document.getElementsByClassName('js-downLog')[0];" +
+                        "window.myJs.showSource(a.href)";
+            case 2://应用宝
+                return "javascript:var data= document.getElementsByClassName('det-down-btn')[0];\n" +
+                        "window.myJs.showSource(data.getAttribute('data-apkurl'))";
+            case 3://华为
+                return "javascript:var data= document.getElementsByClassName('mkapp-btn')[0];\n" +
+                        "window.myJs.showSource(data.getAttribute('onclick'))";
+            case 4://小米
+                return "javascript:var data= document.getElementsByClassName('app-info-down')[0].children[0];\n" +
+                        "window.myJs.showSource(data.getAttribute('href'))";
+            case 5://vivo
+                return "javascript:var data= document.getElementsByClassName('button-box')[0].children[0];\n" +
+                        "window.myJs.showSource(data.getAttribute('data'))";
+        }
+        return "";
     }
 
     /**
@@ -136,7 +156,6 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         mAdapter = new DiscoverAdapter();
         rv.setLayoutManager(new GridLayoutManager(getContext(), 4));
         rv.setAdapter(mAdapter);
-        mAdapter.setNewData(getAppModels());
         mAdapter.setOnItemClickListener(this);
     }
 
@@ -151,12 +170,11 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
 
     public void loadUrl(DiscoverAppModel discoverAppModel) {
         String packageName = discoverAppModel.getPackageName();
-        String url;
-        if (discoverAppModel.getMarket() == EMarket.YINGYONGBAO)
-            url = DiscoverLib.MARKET_YINGYONGBAO + packageName;
-        else {
-            url = DiscoverLib.MARKET_360 + packageName;
+        if (AppUtils.getAppInfo(packageName) != null) {
+            AppUtils.launchApp(packageName);
+            return;
         }
+        String url = discoverAppModel.getLinkUrl();
         if (TextUtils.equals(url, linkUrl))//防止多次点击
             return;
         linkUrl = url;
@@ -215,10 +233,10 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
      * 从链接提取下载文件名
      */
     private String getDownloadFileName(String url) {
-        switch (mAdapter.getData().get(position).getMarket()) {
-            case YINGYONGBAO:
+        switch (mAdapter.getData().get(position).getMarketType()) {
+            case 2:
                 return ParseUtils.parseFileNameFromYingyongbao(url);
-            case QH360:
+            case 1:
                 return ParseUtils.parseFileNameFrom360(url);
         }
         return String.format("%d.apk", System.currentTimeMillis());
@@ -250,12 +268,28 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         @JavascriptInterface
         public void showSource(String html) {
             System.out.println("**********" + html);
-            if (mAdapter.getData().get(position).getMarket() == EMarket.QH360) {
-                String url = ParseUtils.parse360DownloadUrl(html);
-                if (url != null)
-                    download(url);
-            } else
-                download(html);
+            switch (mAdapter.getData().get(position).getMarketType()) {
+                case 1: {
+                    String url = ParseUtils.parse360DownloadUrl(html);
+                    if (url != null)
+                        download(url);
+                }
+                break;
+                case 2:
+                case 5:
+                    download(html);
+                    break;
+                case 3: {
+                    String url = ParseUtils.parseHuaweiDownloadUrl(html);
+                    if (url != null)
+                        download(url);
+                }
+                break;
+                case 4:
+                    System.out.println("**************   http://app.mi.com" + html);
+                    download("http://app.mi.com" + html);
+                    break;
+            }
         }
     }
 

@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aso114.discover.model.DiscoverAppModel;
-import com.aso114.discover.model.EMarket;
 import com.aso114.discover.view.DiscoverHeaderFragment;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ public class HeaderFragement extends DiscoverHeaderFragment {
         List<DiscoverAppModel> apps = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             if (i % 2 == 0)
-                apps.add(new DiscoverAppModel(0, "菜谱", "com.meichu.food.release", EMarket.YINGYONGBAO, ""));
+                apps.add(new DiscoverAppModel("", "菜谱", "com.meichu.food.release",2, ""));
             else
-                apps.add(new DiscoverAppModel(0, "文件管家", "4012901", EMarket.QH360, ""));
+                apps.add(new DiscoverAppModel("", "文件管家", "4012901", 1, ""));
         }
         return apps;
     }

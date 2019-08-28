@@ -3,6 +3,9 @@ package com.aso114.myapplication;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
+import com.aso114.discover.utils.AppUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,5 +25,11 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.aso114.myapplication", appContext.getPackageName());
+    }
+    @Test
+    public void isAppExist(){
+        AppUtils.AppInfo appInfo = AppUtils.getAppInfo("com.cyp.fm");
+        AppUtils.AppInfo appInfo1 = AppUtils.getAppInfo("com.cyp.fm12");
+        Log.e("","");
     }
 }

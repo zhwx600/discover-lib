@@ -9,6 +9,6 @@ public class HeaderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_header);
-        getSupportFragmentManager().beginTransaction().add(R.id.container,new HeaderFragement()).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.container,new MyFragment()).commitAllowingStateLoss();
     }
 }

@@ -1,53 +1,38 @@
 package com.aso114.discover.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DiscoverAppModel {
-    private int imgRes;//app图标
-    private String appName;//app名称
+    private String litpic;//app图标
+    private String title;//app名称
+    @SerializedName("package")
     private String packageName;//包名
-    /**
-     * {@link com.aso114.discover.model.EMarket}
-     */
-    private EMarket market;//市场名称
-    private String marketUrl;//app在市场的地址（备用）
+    // 1-360 2-应用宝 3-华为 4-小米 5-vivo
+    private int marketType;//市场名称
+    private String linkUrl;//app在市场的地址
 
-    public DiscoverAppModel(int imgRes, String appName, String packageName, EMarket market, String marketUrl) {
-        this.imgRes = imgRes;
-        this.appName = appName;
+    public DiscoverAppModel(String litpic, String title, String packageName, int marketType, String linkUrl) {
+        this.litpic = litpic;
+        this.title = title;
         this.packageName = packageName;
-        this.market = market;
-        this.marketUrl = marketUrl;
+        this.marketType = marketType;
+        this.linkUrl = linkUrl;
     }
 
-    public EMarket getMarket() {
-        return market;
+    public String getLitpic() {
+        return litpic;
     }
 
-    public void setMarket(EMarket market) {
-        this.market = market;
+    public void setLitpic(String litpic) {
+        this.litpic = litpic;
     }
 
-    public String getMarketUrl() {
-        return marketUrl;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMarketUrl(String marketUrl) {
-        this.marketUrl = marketUrl;
-    }
-
-    public int getImgRes() {
-        return imgRes;
-    }
-
-    public void setImgRes(int imgRes) {
-        this.imgRes = imgRes;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPackageName() {
@@ -58,4 +43,19 @@ public class DiscoverAppModel {
         this.packageName = packageName;
     }
 
+    public int getMarketType() {
+        return marketType;
+    }
+
+    public void setMarketType(int marketType) {
+        this.marketType = marketType;
+    }
+
+    public String getLinkUrl() {
+        return linkUrl;
+    }
+
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
 }

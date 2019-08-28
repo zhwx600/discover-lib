@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 import com.aso114.discover.model.DiscoverAppModel;
 import com.aso114.discover.R;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -15,7 +16,7 @@ public class DiscoverAdapter extends BaseQuickAdapter<DiscoverAppModel, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, DiscoverAppModel item) {
-        helper.setText(R.id.tvName, item.getAppName());
-        helper.<ImageView>getView(R.id.img).setImageResource(item.getImgRes());
+        helper.setText(R.id.tvName, item.getTitle());
+        Glide.with(mContext).load(item.getLitpic()).into(helper.<ImageView>getView(R.id.img));
     }
 }

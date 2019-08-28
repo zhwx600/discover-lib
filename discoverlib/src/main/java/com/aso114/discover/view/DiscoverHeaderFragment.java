@@ -23,7 +23,6 @@ import android.widget.PopupWindow;
 import com.aso114.discover.DiscoverLib;
 import com.aso114.discover.R;
 import com.aso114.discover.model.DiscoverAppModel;
-import com.aso114.discover.model.EMarket;
 import com.aso114.discover.utils.AppUtils;
 import com.aso114.discover.utils.FileUtils;
 import com.aso114.discover.utils.ParseUtils;
@@ -109,7 +108,7 @@ public abstract class DiscoverHeaderFragment extends Fragment implements BaseQui
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 String js;
-                if (mAdapter.getData().get(position).getMarket() == EMarket.QH360)
+                if (mAdapter.getData().get(position).getMarketType() == 1)
                     js = "javascript:var a=document.getElementsByClassName('js-downLog')[0];" +
                             "window.myJs.showSource(a.href)";
                 else
@@ -158,7 +157,7 @@ public abstract class DiscoverHeaderFragment extends Fragment implements BaseQui
         DiscoverAppModel discoverAppModel = mAdapter.getData().get(position);
         String packageName = discoverAppModel.getPackageName();
         String url;
-        if (discoverAppModel.getMarket() == EMarket.YINGYONGBAO)
+        if (discoverAppModel.getMarketType() == 2)
             url = DiscoverLib.MARKET_YINGYONGBAO + packageName;
         else {
             url = DiscoverLib.MARKET_360 + packageName;
@@ -226,10 +225,10 @@ public abstract class DiscoverHeaderFragment extends Fragment implements BaseQui
      * 从链接提取下载文件名
      */
     private String getDownloadFileName(String url) {
-        switch (mAdapter.getData().get(position).getMarket()) {
-            case YINGYONGBAO:
+        switch (mAdapter.getData().get(position).getMarketType()) {
+            case 2:
                 return ParseUtils.parseFileNameFromYingyongbao(url);
-            case QH360:
+            case 1:
                 return ParseUtils.parseFileNameFrom360(url);
         }
         return String.format("%d.apk", System.currentTimeMillis());
@@ -261,7 +260,7 @@ public abstract class DiscoverHeaderFragment extends Fragment implements BaseQui
         @JavascriptInterface
         public void showSource(String html) {
             System.out.println("**********" + html);
-            if (mAdapter.getData().get(position).getMarket() == EMarket.QH360) {
+            if (mAdapter.getData().get(position).getMarketType() == 1) {
                 String url = ParseUtils.parse360DownloadUrl(html);
                 if (url != null)
                     download(url);

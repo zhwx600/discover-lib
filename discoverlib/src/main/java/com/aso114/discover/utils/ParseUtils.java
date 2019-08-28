@@ -22,6 +22,21 @@ public class ParseUtils {
         return null;
     }
 
+    //获取华为下载链接
+    public static String parseHuaweiDownloadUrl(String html) {
+        String[] split = html.split(",");
+        if (split.length < 5) {
+            DiscoverLib.showToast("链接解析错误");
+        } else {
+            String url = split[5].replaceAll("'", "").trim();
+            if (url.startsWith("http")) {
+                return url;
+            }
+            DiscoverLib.showToast("链接解析错误");
+        }
+        return null;
+    }
+
     /**
      * 获取360市场apk文件名
      */
@@ -33,6 +48,7 @@ public class ParseUtils {
         }
         return String.format("%d.apk", System.currentTimeMillis());
     }
+
     /**
      * 获取应用宝市场apk文件名
      */
