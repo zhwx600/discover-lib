@@ -52,6 +52,8 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
     private View defaultTitleView;
     private ViewGroup parentView;
     private ImageView imgDefault;
+    private boolean isListItemClick;
+    private DiscoverAppModel discoverAppModel;
 
     public abstract void setAd(ViewGroup container, ImageView imgDefault);
 
@@ -111,7 +113,10 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                web.loadUrl(loadParseJs(mAdapter.getData().get(position).getMarketType()));
+                if (isListItemClick)
+                    web.loadUrl(loadParseJs(mAdapter.getData().get(position).getMarketType()));
+                else if (discoverAppModel != null)
+                    web.loadUrl(loadParseJs(discoverAppModel.getMarketType()));
             }
 
         });
@@ -168,7 +173,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         checkPermission();
     }
 
-    public void loadUrl(DiscoverAppModel discoverAppModel) {
+    public void loadUrl(boolean isList, DiscoverAppModel discoverAppModel) {
         String packageName = discoverAppModel.getPackageName();
         if (AppUtils.getAppInfo(packageName) != null) {
             AppUtils.launchApp(packageName);
@@ -178,6 +183,8 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         if (TextUtils.equals(url, linkUrl))//防止多次点击
             return;
         linkUrl = url;
+        this.discoverAppModel = discoverAppModel;
+        this.isListItemClick = isList;
         web.loadUrl(url);
         DiscoverLib.showToast("正在获取下载链接");
     }
@@ -188,7 +195,7 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
             @Override
             public void accept(Permission permission) throws Exception {
                 if (permission.granted) {
-                    loadUrl(mAdapter.getData().get(position));
+                    loadUrl(true, mAdapter.getData().get(position));
                 } else if (permission.shouldShowRequestPermissionRationale) {
                 } else {//不要询问
                     DiscoverLib.showToast("请打开存储权限");
@@ -233,7 +240,12 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
      * 从链接提取下载文件名
      */
     private String getDownloadFileName(String url) {
-        switch (mAdapter.getData().get(position).getMarketType()) {
+        int marketType = 0;
+        if (isListItemClick)
+            marketType = mAdapter.getData().get(position).getMarketType();
+        else if (discoverAppModel!=null)
+            marketType=discoverAppModel.getMarketType();
+        switch (marketType) {
             case 2:
                 return ParseUtils.parseFileNameFromYingyongbao(url);
             case 1:
@@ -268,7 +280,12 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
         @JavascriptInterface
         public void showSource(String html) {
             System.out.println("**********" + html);
-            switch (mAdapter.getData().get(position).getMarketType()) {
+            int marketType = 0;
+            if (isListItemClick)
+                marketType = mAdapter.getData().get(position).getMarketType();
+            else if (discoverAppModel!=null)
+                marketType=discoverAppModel.getMarketType();
+            switch (marketType) {
                 case 1: {
                     String url = ParseUtils.parse360DownloadUrl(html);
                     if (url != null)
@@ -288,6 +305,8 @@ public abstract class DiscoverFragment extends Fragment implements BaseQuickAdap
                 case 4:
                     System.out.println("**************   http://app.mi.com" + html);
                     download("http://app.mi.com" + html);
+                    break;
+                default:
                     break;
             }
         }

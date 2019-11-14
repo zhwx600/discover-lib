@@ -15,7 +15,6 @@ import com.lzy.okgo.model.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +25,7 @@ public class MyFragment extends DiscoverFragment {
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadUrl(false,new DiscoverAppModel("","","com.waipo.food.release",3,"http://appstore.huawei.com/app/C100030273"));
             }
         });
     }
@@ -65,8 +65,7 @@ public class MyFragment extends DiscoverFragment {
 
     @Override
     public void initData() {
-
-        OkGo.<String>get("http://lanrenapi.yunxiapi.com/index.php").params(getParams("1")).execute(new StringCallback() {
+        OkGo.<String>get("http://api.sjsj.cn/index.php").params(getParams("1")).execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
                 try {
@@ -86,13 +85,6 @@ public class MyFragment extends DiscoverFragment {
                 }
             }
         });
-//        List<DiscoverAppModel> apps = new ArrayList<>();
-//        apps.add(new DiscoverAppModel(0, "菜谱", "com.meichu.food.release", 2, "http://sj.qq.com/myapp/detail.htm?apkName=com.meichu.food.release"));
-//        apps.add(new DiscoverAppModel(0, "文件管家", "com.cyp.fm", 1, "http://zhushou.360.cn/detail/index/soft_id/4012901"));
-//        apps.add(new DiscoverAppModel(0, "QQhuawei", "com.tencent.mobileqq", 3, "https://appstore.huawei.com/app/C9319"));
-//        apps.add(new DiscoverAppModel(0, "电池", "com.battery.easy", 4, "http://app.mi.com/details?id=com.battery.easy"));
-//        apps.add(new DiscoverAppModel(0, "QQ", "com.tencent.mobileqq", 5, "http://info.appstore.vivo.com.cn/detail/40439"));
-//        setAppList(apps);
     }
 
 }
