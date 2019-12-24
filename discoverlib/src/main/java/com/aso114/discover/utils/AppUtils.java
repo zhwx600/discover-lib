@@ -827,7 +827,7 @@ public final class AppUtils {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            String authority = DiscoverLib.getContext().getPackageName() + ".fileProvider";
+            String authority = DiscoverLib.getContext().getPackageName() + ".DiscoverFileProvider";
             Log.e("dasd", "getInstallAppIntent: "+authority );
             data = FileProvider.getUriForFile(DiscoverLib.getContext(), authority, file);
         }

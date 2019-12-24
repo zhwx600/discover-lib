@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <paths>
-        <external-path name="gdt_sdk_download_path" path="GDTDOWNLOAD" />
-        <external-path
-            name="ad_download"
-            path="ADdownload" />
-    </paths>
-</resources>

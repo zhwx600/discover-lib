@@ -38,13 +38,13 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileProvider"
+            android:name="com.aso114.discover.utils.DiscoverFileProvider"
+            android:authorities="${applicationId}.DiscoverFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider" />
+                android:resource="@xml/discover_download_paths" />
         </provider>
     </application>
 
